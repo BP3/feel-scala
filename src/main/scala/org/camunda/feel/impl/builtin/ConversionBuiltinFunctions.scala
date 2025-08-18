@@ -325,16 +325,13 @@ class ConversionBuiltinFunctions(valueMapper: ValueMapper) {
 
   private def toJsonFunction: ValFunction = builtinFunction(
     params = List("object"),
-    invoke = {
-      case List(ValNull) => ValString(jsonMapper.writeValueAsString(null))
-
-      case List(obj) =>
-        Try {
-          val jsonString = jsonMapper.writeValueAsString(convertToJsonValue(obj))
-          ValString(jsonString)
-        }.getOrElse({
-          ValError(s"Failed to convert object to JSON: ${obj.getClass.getSimpleName}")
-        })
+    invoke = { case List(obj) =>
+      Try {
+        val jsonString = jsonMapper.writeValueAsString(convertToJsonValue(obj))
+        ValString(jsonString)
+      }.getOrElse({
+        ValError(s"Failed to convert object to JSON: ${obj.getClass.getSimpleName}")
+      })
     }
   )
 
