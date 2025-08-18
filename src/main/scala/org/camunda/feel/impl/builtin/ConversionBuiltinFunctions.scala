@@ -326,7 +326,7 @@ class ConversionBuiltinFunctions(valueMapper: ValueMapper) {
   private def toJsonFunction: ValFunction = builtinFunction(
     params = List("object"),
     invoke = {
-      case List(ValNull) => ValString("null")
+      case List(ValNull) => ValString(jsonMapper.writeValueAsString(null))
 
       case List(obj) =>
         Try {
